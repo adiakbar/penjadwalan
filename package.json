@@ -1,0 +1,25 @@
+{
+  "name": "api-penjadwalan",
+  "version": "1.0.0",
+  "description": "API Sistem Penjadwalan",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ady21/penjadwalan.git"
+  },
+  "keywords": [
+    "penjadwalan",
+    "API"
+  ],
+  "author": "adi akbar",
+  "bugs": {
+    "url": "https://github.com/ady21/penjadwalan/issues"
+  },
+  "homepage": "https://github.com/ady21/penjadwalan",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "express-myconnection": "^1.0.4",
+    "mysql": "^2.8.0"
+  }
+}
