@@ -44,11 +44,14 @@ app.post('/auth',function(req,res){
 });
 
 var routeMahasiswa = require('./routes/mahasiswa');
-var routeMatakuliah = require('./routes/matakuliah');
-
+var routePraktikum = require('./routes/praktikum');
+var routeJampraktikum = require('./routes/jampraktikum');
+var routeJadwalpraktikum = require('./routes/jadwalpraktikum');
 
 app.use('/api/mahasiswa', routeMahasiswa);
-app.use('/api/matakuliah', routeMatakuliah);
+app.use('/api/praktikum', routePraktikum);
+app.use('/api/jampraktikum', routeJampraktikum);
+app.use('/api/jadwalpraktikum', routeJadwalpraktikum);
 
 app.listen(port,function() {
 	console.log('Listen Port ' + port);
