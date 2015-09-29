@@ -17,9 +17,10 @@
   },
   "homepage": "https://github.com/ady21/penjadwalan",
   "dependencies": {
+    "basic-auth": "^1.0.3",
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "express-myconnection": "^1.0.4",
-    "mysql": "^2.8.0"
+    "mysql": "^2.9.0"
   }
 }

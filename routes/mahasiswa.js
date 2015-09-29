@@ -2,69 +2,42 @@ var express	= require('express');
 var router 	= express.Router();
 
 var auth = require('../auth');
+var connection = require('../connMysql');
 
-router.route('/')
+router.route('/prodi/:id_prodi')
 	.get(auth,function(req,res) {
-		req.getConnection(function(err,conn) {
-			var query = conn.query('SELECT * FROM mahasiswa', function(err, data) {
-				if(err) console.log(err);
-				res.json(data);
-			});
-		});
-	})
-
-	.post(auth,function(req,res) {
-		var dataMahasiswa = {
-			nama_mahasiswa	: req.body.nama,
-			nim		: req.body.nim,
-			rfid		: req.body.rfid,
-			angkatan	: req.body.angkatan
-		};
-		req.getConnection(function(err,conn) {
-			var query = conn.query("INSERT INTO mahasiswa set ? ",dataMahasiswa,function(err,data){
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Created" });
-			});
+		var prodi_id = req.params.id_prodi;
+		connection.query("SELECT * FROM mahasiswa WHERE prodi_id = ?",prodi_id,function(err,data) {
+			if (!err)
+		     res.json(data);
+		   else
+		     console.log('Check Your Query');
 		});
 	});
 
-router.route('/:id')
+router.route('/id/:id_mahasiswa')
 	.get(auth,function(req,res) {
-		var id_mahasiswa = req.params.id;
-		req.getConnection(function(err,conn) {
-			var query = conn.query("SELECT * FROM mahasiswa WHERE id_mahasiswa = ? LIMIT 1 ",id_mahasiswa,function(err,data) {
-				if(err) console.log(err);
-				// mahasiswa not found
-				if(data.length < 1)
-					return res.send("Mahasiswa Not Found");
-				res.send(data[0]);
-			});
-		});
-	})
-
-	.put(auth,function(req,res) {
-		var id_mahasiswa = req.params.id;
-		var dataMahasiswa = {
-			rfid 	: req.body.rfid,
-			nama 	: req.body.nama,
-			nim 	: req.body.nim
-		};
-		req.getConnection(function(err,conn) {
-			var query = conn.query("UPDATE mahasiswa set ? WHERE id_mahasiswa = ? ",[dataMahasiswa,id_mahasiswa],function(err,data) {
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Updated" });
-			});
-		});
-	})
-
-	.delete(auth,function(req,res) {
-		var id_mahasiswa = req.params.id;
-		req.getConnection(function(err,conn){
-			var query = conn.query("DELETE FROM mahasiswa WHERE id_mahasiswa = ? ",id_mahasiswa,function(err,data) {
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Deleted" });
-			});
+		var id = req.params.id_mahasiswa;
+		connection.query("SELECT * FROM mahasiswa WHERE id = ?",id,function(err,data) {
+			if(!err)
+				res.json(data[0]);
+			else
+				console.log('Check Your Query');
 		});
 	});
+
+router.route('/rfid/:rfid_mahasiswa')
+	.get(auth,function(req,res) {
+		var rfid = req.params.rfid_mahasiswa;
+		connection.query("SELECT * FROM mahasiswa WHERE rfid = ?",rfid,function(err,data) {
+			if(!err)
+				res.json(data[0]);
+			else
+				console.log('Check Your Query');
+		});
+	});
+	
+
+
 
 module.exports = router;

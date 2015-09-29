@@ -2,72 +2,31 @@ var express = require('express');
 var router 	= express.Router();
 
 var auth 	= require('../auth');
+var connection = require('../connMysql');
 
-router.route('/')
+router.route('/prodi/:id_prodi')
 	.get(auth,function(req,res) {
-		req.getConnection(function(err,conn) {
-			var query = conn.query('SELECT * FROM praktikum', function(err, data) {
-				if(err) console.log(err);
+		var prodi_id = req.params.id_prodi;
+		connection.query('SELECT * FROM praktikum WHERE prodi_id = ?',prodi_id,function(err,data) {
+			if(!err)
 				res.json(data);
-			});
-		});
-	})
-
-	.post(auth,function(req,res) {
-		var datapraktikum = {
-			nama_praktikum : req.body.nama,
-			kode 				: req.body.kode,
-			semester 		: req.body.semester,
-			sks 				: req.body.sks
-		};
-		req.getConnection(function(err,conn){
-			if(err) return ("Tidak Terhubung");
-			var query = conn.query("INSERT INTO praktikum set ? ",datapraktikum,function(err,data){
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Created" });
-			});
+			else
+				console.log("Check Your Query");
 		});
 	});
 
-router.route(':/id')
+router.route('/id/:id')
 	.get(auth,function(req,res) {
-		var id_praktikum = req.params.id;
-		req.getConnection(function(err,conn){
-			var query = conn.query("SELECT * FROM praktikum WHERE id_praktikum = ? LIMIT 1 ",id_praktikum,function(err,rows) {
-				if(err) console.log(err);
-				// praktikum not found
-				if(data.length < 1)
-					return res.send("Praktikum Not Found");
-				res.send(data[0]);
-			});
-		});
-	})
-
-	.put(auth, function(req,res) {
-		var id_praktikum = req.params.id;
-		var datapraktikum = {
-			nama_praktikum : req.body.nama,
-			kode 				: req.body.kode,
-			semester 		: req.body.semester,
-			sks 				: req.body.sks
-		};
-		req.getConnection(function(err,conn){
-			var query = conn.query("UPDATE praktikum set ? WHERE id_praktikum = ? ",[datapraktikum,id_praktikum],function(err,data) {
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Updated" });
-			});
-		});
-	})
-
-	.delete(auth,function(req,res) {
-		var id_praktikum = req.params.id;
-		req.getConnection(function(err,conn){
-			if(err) return ("Tidak Terhubung");
-			var query = conn.query("DELETE FROM praktikum WHERE id_praktikum = ? ",id_praktikum,function(err,data) {
-				if(err) console.log(err);
-				res.json({ success: true, message: "Data Deleted" });
-			});
+		var id = req.params.id;
+		connection.query('SELECT * FROM praktikum WHERE id = ?',id,function(err,data) {
+			if(!err)
+				res.json(data[0]);
+			else
+				console.log("Check Your Query");
 		});
 	});
+
+route.route('/kode/:kode')
+	.get(auth,function(req,res))
 
 module.exports = router;

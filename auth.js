@@ -1,5 +1,5 @@
-var express = require('express');
-var basicAuth = require('basic-auth');
+var express 	= require('express');
+var basicAuth 	= require('basic-auth');
 
 var auth = function(req,res,next) {
 	function unauthorized(res) {
