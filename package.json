@@ -21,6 +21,7 @@
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "express-myconnection": "^1.0.4",
-    "mysql": "^2.9.0"
+    "mysql": "^2.9.0",
+    "password-hash": "^1.2.2"
   }
 }

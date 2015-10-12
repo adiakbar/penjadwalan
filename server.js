@@ -7,16 +7,25 @@ var app 			= express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.all("/*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  return next();
+});
+
 
 var routeMahasiswa = require('./routes/mahasiswa');
 var routePraktikum = require('./routes/praktikum');
-// var routeJampraktikum = require('./routes/jampraktikum');
-// var routeJadwalpraktikum = require('./routes/jadwalpraktikum');
+var routePraktikumTambahan = require('./routes/praktikumtambahan');
+var routeDetailpraktikum = require('./routes/detailpraktikum');
+var routeAction = require('./routes/action');
 
 app.use('/api/mahasiswa', routeMahasiswa);
 app.use('/api/praktikum', routePraktikum);
-// app.use('/api/jampraktikum', routeJampraktikum);
-// app.use('/api/jadwalpraktikum', routeJadwalpraktikum);
+app.use('/api/praktikumtambahan', routePraktikumTambahan);
+app.use('/api/detailpraktikum', routeDetailpraktikum);
+app.use('/api/action', routeAction);
 
 app.listen(port,function() {
 	console.log('Listen Port ' + port);

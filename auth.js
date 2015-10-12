@@ -1,22 +1,30 @@
 var express 	= require('express');
 var basicAuth 	= require('basic-auth');
 
+var connection = require('./connMysql');
+var passwordHash = require('password-hash');
+
 var auth = function(req,res,next) {
 	function unauthorized(res) {
 		res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-		return res.send(401);
+		return res.sendStatus(401);
 	};
 
-	var user = basicAuth(req);
-	if(!user || !user.name || !user.pass) {
+	var operator = basicAuth(req);
+	if(!operator || !operator.name || !operator.pass) {
 		return unauthorized(res);
 	};
 
-	if(user.name === 'adi' && user.pass === 'siskom10') {
-		next();
-	} else {
-		return unauthorized(res);
-	};
+	connection.query('SELECT * FROM operator WHERE username = ?',operator.name,function(err,data) {
+		if(!err)
+			if(passwordHash.verify(operator.pass,data[0].password)){
+				next();
+			} else {
+				return unauthorized(res);
+			}
+		else
+			console.log(err);
+	});
 };
 
 module.exports = auth;
