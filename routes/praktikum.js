@@ -14,59 +14,80 @@ router.route('/prodi/:id_prodi')
 				console.log(err);
 		});
 	})
-	.post(function(req,res) {
+	.post(auth,function(req,res) {
 		var dataPraktikum = {
 			prodi_id		: req.params.id_prodi,
 			praktikum 	: req.body.praktikum,
-			kode			: req.body.kode,
+			kode				: req.body.kode,
 			semester		: req.body.semester,
-			dosen			: req.body.dosen,
-			hari			: req.body.hari,
-			mulai			: req.body.mulai, // buat 1 table lagi untuk mulai cek - 15 menit
-			selesai		: req.body.selesai,
-			ruangan		: req.body.ruangan
+			dosen				: req.body.dosen,
+			hari				: req.body.hari,
+			mulai				: req.body.mulai,
+			mulai_scan	: req.body.mulai_scan,
+			selesai			: req.body.selesai,
+			ruangan			: req.body.ruangan
 		};
 		connection.query('INSERT INTO praktikum set ? ',dataPraktikum,function(err,data) {
 			if(!err)
 				res.json({ success: true, message: "Data Created" });
-			else 
+			else
 				console.log(err);
 		});
 	});
 
 
-router.route('/id/:id')
-	.get(function(req,res) {
-		var id = req.params.id;
+router.route('/id/:id_praktikum')
+	.get(auth,function(req,res) {
+		var id = req.params.id_praktikum;
 		connection.query('SELECT * FROM praktikum WHERE id_praktikum = ?',id,function(err,data) {
 			if(!err)
 				res.json(data[0]);
 			else
 				console.log(err);
 		});
-	});
-
-router.route('/id/:id/reset')
-	.get(function(req,res) {
-		var id = req.params.id;
-		connection.query('UPDATE praktikum SET hari = NULL, mulai = NULL, selesai = NULL, ruangan = NULL WHERE id_praktikum = ?',id,function(err,data) {
+	})
+	.put(auth,function(req,res) {
+		var id = req.params.id_praktikum;
+		var dataPraktikum = {
+			praktikum 	: req.body.praktikum,
+			kode				: req.body.kode,
+			semester		: req.body.semester,
+			dosen				: req.body.dosen,
+			hari				: req.body.hari,
+			mulai				: req.body.mulai,
+			mulai_scan	: req.body.mulai_scan,
+			selesai			: req.body.selesai,
+			ruangan			: req.body.ruangan
+		};
+		connection.query('UPDATE praktikum SET ? WHERE id_praktikum = ?',[dataPraktikum,id],function(err,data) {
 			if(!err)
 				res.json({ success: true, message: "Data Updated" });
-			else 
+			else
 				console.log(err);
-		})
+		});
 	})
-
-router.route('/kode/:kode')
-	.get(auth,function(req,res) {
-		var kode = req.params.kode;
-		connection.query('SELECT * FROM praktikum WHERE kode = ?',id,function(err,data) {
+	.delete(auth,function(req,res) {
+		var id = req.params.id_praktikum;
+		connection.query('DELETE FROM praktikum WHERE id_praktikum = ?',id,function(err,data) {
 			if(!err)
-				res.json(data[0]);
+				res.json({ success: true, message: "Data Deleted" });
 			else
 				console.log(err);
 		});
 	});
 
+router.route('/id/:id_praktikum/reset')
+	.get(auth,function(req,res) {
+		var id = req.params.id_praktikum;
+		connection.query('DELETE FROM detailpraktikum WHERE praktikum_id = ?',id,function(err,data) {
+			if(!err) {
+				connection.query('UPDATE praktikum SET hari = NULL, mulai = NULL, selesai = NULL, ruangan = NULL WHERE id_praktikum = ?',id,function(err,data) {
+					if(!err) {
+						res.json({ success: true, message: "Data Updated" });
+					}
+				});
+			}
+		});
+	});
 
 module.exports = router;

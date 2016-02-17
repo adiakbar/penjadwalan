@@ -21,13 +21,24 @@ router.route('/')
 router.route('/praktikum/id/:id_praktikum')
 	.get(function(req,res) {
 		var praktikum_id = req.params.id_praktikum;
-		connection.query('SELECT * FROM mahasiswa LEFT JOIN (SELECT * FROM detailpraktikum WHERE praktikum_id=?) t2 on t2.mahasiswa_id = mahasiswa.id_mahasiswa',praktikum_id,function(err,data) {
+		connection.query('SELECT * FROM mahasiswa LEFT JOIN (SELECT * FROM detailpraktikum WHERE praktikum_id=?) t2 on t2.mahasiswa_id = mahasiswa.id_mahasiswa WHERE mahasiswa.prodi_id = 1',praktikum_id,function(err,data) {
 			if(!err)
 				res.json(data);
 			else
 				console.log(err);
 		});
 	});
+
+router.route('/mahasiswa/id/:id_mahasiswa')
+	.get(function(req,res) {
+		var mahasiswa_id = req.params.id_mahasiswa;
+		connection.query("SELECT * FROM detailpraktikum LEFT JOIN praktikum on detailpraktikum.praktikum_id = praktikum.id_praktikum WHERE detailpraktikum.mahasiswa_id = ?",mahasiswa_id,function(err,data) {
+			if(!err)
+				res.json(data);
+			else
+				console.log(err);
+		})
+	})
 
 router.route('/:id_praktikum/:id_mahasiswa')
 	.delete(function(req,res) {

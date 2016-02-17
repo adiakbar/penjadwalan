@@ -13,7 +13,7 @@ var auth = function(req,res,next) {
 	var operator = basicAuth(req);
 	if(!operator || !operator.name || !operator.pass) {
 		return unauthorized(res);
-	};
+	}
 
 	connection.query('SELECT * FROM operator WHERE username = ?',operator.name,function(err,data) {
 		if(!err)
@@ -23,7 +23,7 @@ var auth = function(req,res,next) {
 				return unauthorized(res);
 			}
 		else
-			console.log(err);
+			return unauthorized(res);
 	});
 };
 

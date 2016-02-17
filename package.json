@@ -19,9 +19,11 @@
   "dependencies": {
     "basic-auth": "^1.0.3",
     "body-parser": "^1.13.2",
+    "cron": "^1.0.9",
     "express": "^4.13.1",
     "express-myconnection": "^1.0.4",
     "mysql": "^2.9.0",
+    "node-schedule": "^0.2.9",
     "password-hash": "^1.2.2"
   }
 }
