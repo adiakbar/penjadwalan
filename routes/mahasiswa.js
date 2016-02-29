@@ -36,8 +36,5 @@ router.route('/rfid/:rfid_mahasiswa')
 				console.log(err);
 		});
 	});
-	
-
-
 
 module.exports = router;

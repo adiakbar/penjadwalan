@@ -20,11 +20,17 @@ var routePraktikumTambahan 	= require('./routes/praktikumtambahan');
 var routeDetailpraktikum 		= require('./routes/detailpraktikum');
 var routeAction 						= require('./routes/action');
 
-app.use('/api/mahasiswa', routeMahasiswa);
-app.use('/api/praktikum', routePraktikum);
-app.use('/api/praktikumtambahan', routePraktikumTambahan);
-app.use('/api/detailpraktikum', routeDetailpraktikum);
-app.use('/api/action', routeAction);
+var token = '1a2b3c4d5e6f7g8h9i10j11k12l13m14n15o16p17q18r19s20';
+
+app.get('/testing', function(req,res) {
+	res.json({ status: true, pesan: 'Ini adalah halaman testing REST API' });
+});
+
+app.use('/api/'+token+'/mahasiswa', routeMahasiswa);
+app.use('/api/'+token+'/praktikum', routePraktikum);
+app.use('/api/'+token+'/praktikumtambahan', routePraktikumTambahan);
+app.use('/api/'+token+'/detailpraktikum', routeDetailpraktikum);
+app.use('/api/'+token+'/action', routeAction);
 
 app.listen(port,function() {
 	console.log("Server REST Web Service aktif pada port " + port);

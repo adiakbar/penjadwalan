@@ -40,7 +40,7 @@ router.route('/validasi')
 								} else {
 									res.json({ success: true, message: "Halo "+dataMhs[0].mahasiswa, data: dataMhs[0] });
 								}
-							}	
+							}
 						});
 					}
 				});
@@ -100,12 +100,12 @@ router.route('/status')
 	/* Insert data ke table log untuk kondisi ON aplikasi monitoring */
 	.post(function(req,res) {
 		var dataLog = {
-			mahasiswa : req.body.mahasiswa,
-			rfid			: req.body.rfid,
+			mahasiswa 	: req.body.mahasiswa,
+			rfid		: req.body.rfid,
 			tanggal		: req.body.tanggal,
 			ruangan		: req.body.ruangan,
 			komputer	: req.body.komputer,
-			mulai			: req.body.mulai,
+			mulai		: req.body.mulai,
 			selesai		: req.body.selesai,
 			ruangan		: req.body.ruangan,
 			kondisi		: req.body.kondisi
@@ -113,7 +113,7 @@ router.route('/status')
 		connection.query("INSERT INTO log SET ?",dataLog,function(err,data) {
 			if(!err)
 				res.json({ success: true, message: "Data Created" });
-			else 
+			else
 				console.log(err);
 		});
 	})
@@ -121,14 +121,14 @@ router.route('/status')
 	.put(function(req,res) {
 		var dataLog = {
 			mahasiswa 	: req.body.mahasiswa,
-			rfid				: req.body.rfid,
-			tanggal			: req.body.tanggal,
-			ruangan			: req.body.ruangan,
-			komputer		: req.body.komputer,
-			mulai				: req.body.mulai,
-			selesai			: req.body.selesai,
-			ruangan			: req.body.ruangan,
-			kondisi			: req.body.kondisi
+			rfid		: req.body.rfid,
+			tanggal		: req.body.tanggal,
+			ruangan		: req.body.ruangan,
+			komputer	: req.body.komputer,
+			mulai		: req.body.mulai,
+			selesai		: req.body.selesai,
+			ruangan		: req.body.ruangan,
+			kondisi		: req.body.kondisi
 		};
 		connection.query("UPDATE log SET ? WHERE rfid = ? AND tanggal = ?",[dataLog,dataLog.rfid,dataLog.tanggal],function(err,data) {
 			if(!err)
@@ -143,13 +143,13 @@ router.route('/log')
 		var rfid 			= req.query.rfid;
 		var ruangan 	= req.query.ruangan;
 		var tanggal 	= req.query.tanggal;
-	
+
 		connection.query("SELECT * FROM log WHERE (rfid = ? OR ruangan = ?) AND tanggal = ?",[rfid,ruangan,tanggal],function(err,data) {
 			if(!err)
 				res.json(data);
 			else
 				console.log(err);
 		});
-	});	
+	});
 
 module.exports = router;

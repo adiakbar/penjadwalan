@@ -14,7 +14,7 @@ router.route('/prodi/:id_prodi')
 				console.log(err);
 		});
 	})
-	.post(function(req,res) {
+	.post(auth, function(req,res) {
 		var dataPraktikum = {
 			prodi_id		: req.params.id_prodi,
 			praktikum 	: req.body.praktikum,
@@ -29,13 +29,13 @@ router.route('/prodi/:id_prodi')
 		connection.query("INSERT INTO praktikum set ?",dataPraktikum,function(err,data) {
 			if(!err)
 				res.json({ success: true, message: "Data Created" });
-			else 
+			else
 				console.log(err);
 		});
 	});
 
 router.route('/id/:id_praktikum')
-	.get(function(req,res) {
+	.get(auth, function(req,res) {
 		var id = req.params.id_praktikum;
 		connection.query("SELECT * FROM praktikum WHERE id_praktikum = ? AND keterangan = 'tambahan'",id,function(err,data) {
 			if(!err)
@@ -44,7 +44,7 @@ router.route('/id/:id_praktikum')
 				console.log(err);
 		});
 	})
-	.put(function(req,res) {
+	.put(auth, function(req,res) {
 		var id = req.params.id_praktikum;
 		var dataPraktikum = {
 			praktikum 	: req.body.praktikum,
@@ -58,11 +58,11 @@ router.route('/id/:id_praktikum')
 		connection.query("UPDATE praktikum SET ? WHERE id_praktikum = ?",[dataPraktikum,id],function(err,data) {
 			if(!err)
 				res.json({ success: true, message: "Data Updated" });
-			else 
+			else
 				console.log(err);
 		});
 	})
-	.delete(function(req,res) {
+	.delete(auth, function(req,res) {
 		var id = req.params.id_praktikum;
 		connection.query("DELETE FROM praktikum WHERE id_praktikum = ? AND keterangan = 'tambahan'",id,function(err,data) {
 			if(!err)
