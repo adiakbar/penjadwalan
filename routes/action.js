@@ -68,10 +68,10 @@ router.route('/cek-jadwal')
 	.get(function(req,res) {
 		var jam 		= req.query.jam;
 		var hari 		= req.query.hari;
-		var tanggal = req.query.tanggal;
-		var ruangan = req.query.ruangan;
+		var tanggal 	= req.query.tanggal;
+		var ruangan 	= req.query.ruangan;
 
-		connection.query("SELECT * FROM praktikum WHERE hari = ? OR tanggal = ? AND mulai_scan <= ? AND selesai >= ? AND ruangan = ?",[hari,tanggal,jam,jam,ruangan],function(err,data){
+		connection.query("SELECT * FROM praktikum WHERE (hari = ? OR tanggal = ?) AND mulai_scan <= ? AND selesai >= ? AND ruangan = ?",[hari,tanggal,jam,jam,ruangan],function(err,data){
 			if(err || data.length == 0) {
 				res.json({ success: false, praktikum: "Tidak Ada Jadwal" })
 			} else {
@@ -140,11 +140,11 @@ router.route('/status')
 
 router.route('/log')
 	.get(function(req,res) {
-		var rfid 			= req.query.rfid;
+		var rfid 		= req.query.rfid;
 		var ruangan 	= req.query.ruangan;
-		var tanggal 	= req.query.tanggal;
+		// var tanggal 	= req.query.tanggal;
 
-		connection.query("SELECT * FROM log WHERE (rfid = ? OR ruangan = ?) AND tanggal = ?",[rfid,ruangan,tanggal],function(err,data) {
+		connection.query("SELECT * FROM log WHERE rfid = ? AND ruangan = ?",[rfid,ruangan],function(err,data) {
 			if(!err)
 				res.json(data);
 			else
