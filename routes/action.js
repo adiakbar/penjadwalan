@@ -20,7 +20,7 @@ router.route('/validasi')
 				res.json({ success: false, message: "Mahasiswa Tidak Ditemukan" });
 			} else {
 				/* proses cek jadwal ada ndak praktikum pada waktu tersebut */
-				connection.query("SELECT * FROM praktikum WHERE hari = ? OR tanggal = ? AND mulai_scan <= ? AND selesai >= ? AND ruangan = ?",[hari,tanggal,jam,jam,ruangan],function(err,dataPrk) {
+				connection.query("SELECT * FROM praktikum WHERE (hari = ? OR tanggal = ?) AND mulai_scan <= ? AND selesai >= ? AND ruangan = ?",[hari,tanggal,jam,jam,ruangan],function(err,dataPrk) {
 					if(dataPrk.length == 0) {
 						/* menghitung jumlah pc pada laboratorium tersebut kalau sekarang ndak ada praktikum */
 						if(jmlPC == 0) {
